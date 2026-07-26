@@ -869,55 +869,86 @@ h2 + p, h2 + .stack, h3 + p { margin-top: var(--s-lg); }
    bubble with a drop shadow.
    ========================================================================== */
 
-/* The specimen tray: one review shown at full size, the rest waiting in a
-   numbered key beside it — the same figure/key pair the whole site uses.
-   Without JavaScript every review is simply stacked and readable. */
-.reviewplate { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
-@media (max-width: 900px) { .reviewplate { grid-template-columns: minmax(0, 1fr); } }
+/* THE SPECIMEN RAIL. Reviews slide on a native CSS scroll-snap track, so the
+   sliding is real scrolling: it works with a trackpad, a touch swipe, the
+   keyboard, and with JavaScript switched off entirely. The arrows and the
+   position counter are enhancement on top of that, never the mechanism. */
+.reviewrail { position: relative; }
 
-.reviews {
-  position: relative;
-  border: 1px solid var(--plate-rule);
+.reviewtrack {
+  display: flex;
+  /* natural card heights: stretching every card to the longest review left
+     short ones with a third of their box empty */
+  /* equal-height cards: the caption then sits on one baseline across the
+     whole rail, which is what makes them read as a mounted set */
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* dividers are per-card borders, not a filled backdrop — with ragged card
+     heights a backdrop would show as grey blocks under the shorter ones */
   background: var(--plate-field);
+  border: 1px solid var(--plate-rule);
+  /* the scrollbar is replaced by the rule + counter below it */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
 }
+.reviewtrack::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: reduce) { .reviewtrack { scroll-behavior: auto; } }
 
 .review {
-  padding: clamp(22px, 3vw, 38px);
+  flex: 0 0 auto;
+  width: clamp(280px, 82vw, 430px);
+  scroll-snap-align: start;
+  background: var(--plate-field);
+  border-right: 1px solid var(--plate-rule);
+  padding: clamp(22px, 3vw, 34px);
   display: flex; flex-direction: column; gap: var(--s-md);
   margin: 0;
+  /* each card is its own specimen: the rule runs its full height */
+  align-self: stretch;
 }
-/* JS shows one at a time; with JS off they stack, divided by a rule */
-.js .reviews .review { display: none; }
-.js .reviews .review.is-on { display: flex; }
-.reviews .review + .review { border-top: 1px solid var(--plate-rule); }
-.js .reviews .review + .review { border-top: 0; }
+.review:last-child { border-right: 0; }
+@media (min-width: 700px)  { .review { width: 400px; } }
+@media (min-width: 1100px) { .review { width: 430px; } }
 
-/* the numbered key that selects a review */
-.reviewkey { list-style: none; margin: 0; padding: 0; }
-.reviewkey li { position: relative; border-top: 1px solid var(--plate-rule); }
-.reviewkey li:last-child { border-bottom: 1px solid var(--plate-rule); }
-.reviewkey button {
-  appearance: none; background: none; border: 0; margin: 0; border-radius: 0;
-  width: 100%; box-sizing: border-box; text-align: left; cursor: pointer;
-  display: grid; grid-template-columns: 30px 1fr; gap: var(--s-md);
-  align-items: baseline; padding: 15px 12px 15px 0;
-  font: inherit; color: inherit;
-  transition: background var(--dur-ui) var(--ease-plate);
+/* the rail's own controls, drawn as plate buttons */
+.railbar {
+  display: flex; align-items: center; gap: var(--s-md);
+  margin-top: var(--s-md);
 }
-.reviewkey button:hover { background: var(--plate-field); }
-.reviewkey button:focus-visible { outline: 2px solid var(--berry-ink); outline-offset: -2px; }
-.reviewkey .n { font: 500 0.75rem/1.5 var(--f-label); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
-.reviewkey .who { font-weight: 500; }
-.reviewkey li[data-on] { background: var(--plate-field); }
-.reviewkey li[data-on] .n { color: var(--berry-ink); }
-.reviewkey li[data-on] .who { font-weight: 700; }
-.reviewkey li::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
-  background: var(--lime-bright); transform: scaleX(0); transform-origin: left;
-  transition: transform var(--dur-ui) var(--ease-plate);
+.railbtn {
+  appearance: none; border: 1px solid var(--berry-ink); background: none;
+  border-radius: 0; cursor: pointer;
+  width: 46px; height: 46px; flex: none;
+  display: grid; place-items: center;
+  color: var(--berry-deep);
+  transition: background var(--dur-ui) var(--ease-plate), color var(--dur-ui) var(--ease-plate);
 }
-.reviewkey li[data-on]::after { transform: scaleX(1); }
-.js .reviewkey { display: block; }
+.railbtn:hover:not(:disabled) { background: var(--berry-ink); color: var(--plate-stock); }
+.railbtn:focus-visible { outline: 2px solid var(--berry-ink); outline-offset: 3px; }
+.railbtn:disabled { opacity: .3; cursor: default; border-color: var(--plate-rule); }
+.railbtn svg { width: 17px; height: 17px; display: block; }
+
+/* a ruled progress bar, not a row of dots */
+.railprog { flex: 1; height: 3px; background: var(--plate-rule); position: relative; min-width: 40px; }
+.railprog span {
+  position: absolute; inset: 0 auto 0 0;
+  background: var(--berry-ink);
+  transition: width var(--dur-ui) var(--ease-plate), left var(--dur-ui) var(--ease-plate);
+}
+.railcount {
+  font: 500 0.6875rem/1 var(--f-label); letter-spacing: .14em;
+  color: var(--ink-muted); font-variant-numeric: tabular-nums; flex: none;
+}
+/* with JS off there is nothing to drive the arrows, so hide them and let the
+   track scroll natively */
+.railbar { display: none; }
+.js .railbar { display: flex; }
+.js .reviewtrack { scrollbar-width: none; }
+:root:not(.js) .reviewtrack { scrollbar-width: thin; }
 .review__rating { display: flex; align-items: center; gap: 8px; }
 .review__stars { display: block; flex: none; }
 .review__stars .st-on { fill: var(--berry-ink); }

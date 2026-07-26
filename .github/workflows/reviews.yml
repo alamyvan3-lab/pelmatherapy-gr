@@ -4,10 +4,13 @@ name: Refresh Google reviews
 # The API key lives in repository Secrets and is only ever used here, on
 # GitHub's runners — it is never shipped to a visitor's browser.
 
+# Manual only. The site currently ships a CURATED set of real reviews from
+# tools/reviews.json (rendered by tools/build-reviews.mjs). Running this
+# workflow REPLACES that curated set with whatever 5 reviews the Google API
+# happens to return, so it must never fire on a schedule and quietly
+# overwrite the owner's chosen ones.
 on:
-  schedule:
-    - cron: '0 4 * * 1'   # every Monday, 04:00 UTC
-  workflow_dispatch: {}    # and on demand from the Actions tab
+  workflow_dispatch: {}
 
 permissions:
   contents: write
