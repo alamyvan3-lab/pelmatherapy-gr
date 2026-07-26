@@ -263,8 +263,11 @@ p:last-child { margin-bottom: 0; }
 /* THE SHEET. A teaching plate is a ruled sheet before it is anything else:
    a hairline edge running the height of the page with the folio hung in the
    margin outside the text column. Only wide viewports have the room. */
+/* 1360px, not 1180: the rules sit at 50% − plate/2 − 34px, which is a NEGATIVE
+   offset until the viewport is wider than about 1310px, and a negative offset
+   pushes the document sideways. Only draw them once there is real margin. */
 .sheet { position: relative; }
-@media (min-width: 1180px) {
+@media (min-width: 1360px) {
   .sheet::before {
     content: '';
     position: absolute; top: 0; bottom: 0;
@@ -290,7 +293,7 @@ p:last-child { margin-bottom: 0; }
   }
   .band .folio { color: rgba(183,204,60,.75); }
 }
-@media (max-width: 1179px) { .folio { display: none; } }
+@media (max-width: 1359px) { .folio { display: none; } }
 
 /* THE OFF-REGISTER, systemic. Berry lays first, lime lands 3px shy — drawn as
    a second impression of the element's own edge, never as a duplicated string,
@@ -858,6 +861,71 @@ h2 + p, h2 + .stack, h3 + p { margin-top: var(--s-lg); }
 /* the affected site is the only thing in the second ink */
 .atlas .site { fill: var(--lime-ink); }
 .atlas figure:hover .site { fill: var(--lime-bright); }
+
+/* ==========================================================================
+   REVIEWS — real Google reviews, written in at build time (see tools/)
+   Treated as specimens mounted on the plate: each one a ruled card with a
+   stipple-filled rating, in the same two inks. Never a rounded testimonial
+   bubble with a drop shadow.
+   ========================================================================== */
+
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--plate-rule);
+  border: 1px solid var(--plate-rule);
+}
+@media (max-width: 900px) { .reviews { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .reviews { grid-template-columns: minmax(0, 1fr); } }
+
+.review {
+  background: var(--plate-field);
+  padding: clamp(20px, 2.6vw, 32px);
+  display: flex; flex-direction: column; gap: var(--s-md);
+  margin: 0;
+}
+.review__rating { display: flex; align-items: center; gap: 8px; }
+.review__stars { display: block; flex: none; }
+.review__stars .st-on { fill: var(--berry-ink); }
+.review__stars .st-off { fill: none; stroke: var(--plate-rule); stroke-width: 1.4; }
+.review__score {
+  font: 500 0.6875rem/1 var(--f-label);
+  letter-spacing: .14em; color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.review__text {
+  margin: 0; max-width: none;
+  font-size: 1rem; line-height: 1.6;
+}
+.review__cite {
+  margin-top: auto; padding-top: var(--s-md);
+  border-top: 1px solid var(--plate-rule);
+  display: flex; justify-content: space-between; gap: var(--s-sm);
+  align-items: baseline; flex-wrap: wrap;
+  font-style: normal;
+}
+.review__who { font-weight: 700; font-size: 0.9375rem; }
+.review__when {
+  font: 500 0.625rem/1.4 var(--f-label);
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-muted);
+}
+
+/* the aggregate, set as an imprint so it reads as a stamped figure */
+.ratingblock { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 28px); flex-wrap: wrap; }
+.ratingblock__num {
+  font-family: var(--f-display); font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1; color: var(--berry-deep); font-variant-numeric: tabular-nums;
+}
+.ratingblock__meta { display: flex; flex-direction: column; gap: 7px; }
+
+/* Google's attribution is required by their terms when showing their reviews */
+.review-attrib {
+  margin-top: var(--s-md);
+  font: 500 0.625rem/1.5 var(--f-label);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted);
+}
+.band .review-attrib { color: rgba(227,230,233,.6); }
 
 /* ==========================================================================
    CONTACT / ROUTE PLATE

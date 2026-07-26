@@ -1,0 +1,45 @@
+name: Refresh Google reviews
+
+# Pulls the practice's real Google reviews and commits them into index.html.
+# The API key lives in repository Secrets and is only ever used here, on
+# GitHub's runners — it is never shipped to a visitor's browser.
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'   # every Monday, 04:00 UTC
+  workflow_dispatch: {}    # and on demand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-reviews
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch reviews and rewrite index.html
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
+        run: node tools/fetch-reviews.mjs
+
+      - name: Commit if the reviews changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- index.html; then
+            echo "No change in reviews — nothing to commit."
+          else
+            git add index.html
+            git commit -m "Refresh Google reviews [skip ci]"
+            git push
+          fi
