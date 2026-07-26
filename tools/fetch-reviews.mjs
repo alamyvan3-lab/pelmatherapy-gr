@@ -21,13 +21,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-/* The Place ID is public information (it appears in Google Maps share links),
-   so it lives here rather than in Secrets. Only the API key is secret.
-   Pelma Therapy · Λ.Ολυμπιονικών 49, Γλυκά Νερά 15354 */
-const DEFAULT_PLACE_ID = 'ChIJowjoh4aZoRQRLeFh927BFF8';
+/* Resolve the business by name+address rather than trusting a pasted Place ID.
+   A Place ID copied from a Maps URL is very easily the ID of the *street
+   address* rather than the *business* — that mistake returns a place with no
+   reviews at all and looks like an empty result rather than an error.
+   Set GOOGLE_PLACE_ID to pin an exact place and skip the lookup. */
+const SEARCH_QUERY = 'Pelma Therapy, Ολυμπιονικών 49, Γλυκά Νερά 15354';
+const EXPECT_NAME = 'pelma';
 
 const KEY = process.env.GOOGLE_PLACES_API_KEY;
-const PLACE_ID = process.env.GOOGLE_PLACE_ID || DEFAULT_PLACE_ID;
+let PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const PAGE = path.join(ROOT, 'index.html');
 
@@ -50,6 +53,35 @@ const esc = (s) => String(s == null ? '' : s)
 /* Places API (New). Only the fields we actually display are requested. */
 const FIELDS = 'displayName,rating,userRatingCount,googleMapsUri,reviews';
 
+/* Step 1 — find the business, unless an exact Place ID was pinned. */
+if (!PLACE_ID) {
+  const s = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': KEY,
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress',
+    },
+    body: JSON.stringify({ textQuery: SEARCH_QUERY, languageCode: 'el' }),
+  });
+  if (!s.ok) {
+    console.error(`Place search failed ${s.status}: ${(await s.text()).slice(0, 400)}`);
+    process.exit(1);
+  }
+  const found = (await s.json()).places || [];
+  const hit = found.find((p) => (p.displayName?.text || '').toLowerCase().includes(EXPECT_NAME));
+  if (!hit) {
+    console.error(
+      `Could not find a place named like "${EXPECT_NAME}".\n` +
+      `Search returned: ${found.map((p) => p.displayName?.text).join(', ') || '(nothing)'}`
+    );
+    process.exit(1);
+  }
+  PLACE_ID = hit.id;
+  console.log(`resolved "${hit.displayName?.text}" (${hit.formattedAddress}) -> ${PLACE_ID}`);
+}
+
+/* Step 2 — pull the details for that place. */
 const res = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(PLACE_ID)}`, {
   headers: {
     'X-Goog-Api-Key': KEY,
@@ -64,6 +96,14 @@ if (!res.ok) {
 }
 
 const data = await res.json();
+
+/* Guard against silently rendering the wrong place (e.g. the street address,
+   which has no reviews and would look like "no reviews yet"). */
+const gotName = (data.displayName?.text || '').toLowerCase();
+if (gotName && !gotName.includes(EXPECT_NAME)) {
+  console.error(`Resolved place is "${data.displayName?.text}", not the practice. Refusing to write.`);
+  process.exit(1);
+}
 const rating = typeof data.rating === 'number' ? data.rating : null;
 const count = data.userRatingCount || 0;
 const mapsUri = data.googleMapsUri || '';
@@ -92,11 +132,11 @@ if (!reviews.length) {
   block = `${START}\n${END}`;
   console.log('No reviews returned — reviews section omitted.');
 } else {
-  const cards = reviews.map((r) => {
+  const cards = reviews.map((r, i) => {
     const when = esc(r.relativePublishTimeDescription || '');
     const who = esc(r.authorAttribution?.displayName || '');
     const txt = esc((r.text?.text || '').trim());
-    return `        <figure class="review">
+    return `        <figure class="review${i === 0 ? ' is-on' : ''}">
           <div class="review__rating">${stars(r.rating)}<span class="review__score">${esc(r.rating)}/5</span></div>
           <blockquote class="review__text">${txt}</blockquote>
           <figcaption class="review__cite">
@@ -104,6 +144,15 @@ if (!reviews.length) {
             <span class="review__when">${when}</span>
           </figcaption>
         </figure>`;
+  }).join('\n');
+
+  const keys = reviews.map((r, i) => {
+    const who = esc(r.authorAttribution?.displayName || '');
+    const when = esc(r.relativePublishTimeDescription || '');
+    return `        <li${i === 0 ? ' data-on' : ''}><button type="button" aria-pressed="${i === 0}">`
+      + `<span class="n">${i + 1}</span>`
+      + `<span><span class="who">${who}</span><br><span class="review__when">${when}</span></span>`
+      + `</button></li>`;
   }).join('\n');
 
   const agg = rating
@@ -117,8 +166,13 @@ if (!reviews.length) {
 <section class="sect" id="reviews">
   <div class="plate">
     <div class="reg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-${agg}    <div class="reviews" style="margin-top:var(--s-lg)">
+${agg}    <div class="reviewplate" style="margin-top:var(--s-lg)">
+      <div class="reviews offreg">
 ${cards}
+      </div>
+      <ol class="reviewkey" data-reviewkey>
+${keys}
+      </ol>
     </div>
     <p class="review-attrib">Google${mapsUri ? ` · <a href="${esc(mapsUri)}" rel="noopener nofollow">Google Maps</a>` : ''}</p>
   </div>

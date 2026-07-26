@@ -154,4 +154,41 @@
     });
     clear();
   }
+
+  /* ------------------------------------------------- the review plate ---- */
+  /* One review on the plate at a time, chosen from the numbered key beside
+     it. With JS off the CSS leaves every review stacked and readable, so
+     nothing here is load-bearing for the content. */
+  var reviewKey = doc.querySelector('[data-reviewkey]');
+  if (reviewKey) {
+    var cards = [].slice.call(doc.querySelectorAll('.reviews .review'));
+    var rows = [].slice.call(reviewKey.querySelectorAll('li'));
+
+    function showReview(i) {
+      cards.forEach(function (c, n) { c.classList.toggle('is-on', n === i); });
+      rows.forEach(function (li, n) {
+        var b = li.querySelector('button');
+        if (n === i) { li.setAttribute('data-on', ''); } else { li.removeAttribute('data-on'); }
+        if (b) b.setAttribute('aria-pressed', String(n === i));
+      });
+    }
+
+    rows.forEach(function (li, i) {
+      var b = li.querySelector('button');
+      if (!b) return;
+      b.addEventListener('click', function () { showReview(i); });
+      b.addEventListener('focus', function () { showReview(i); });
+      // left/right arrows walk the key, the way a set of plates is leafed
+      b.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1
+              : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var next = (i + d + rows.length) % rows.length;
+        var nb = rows[next].querySelector('button');
+        if (nb) nb.focus();
+      });
+    });
+    showReview(0);
+  }
 })();

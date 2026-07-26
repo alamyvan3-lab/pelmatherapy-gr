@@ -869,22 +869,55 @@ h2 + p, h2 + .stack, h3 + p { margin-top: var(--s-lg); }
    bubble with a drop shadow.
    ========================================================================== */
 
+/* The specimen tray: one review shown at full size, the rest waiting in a
+   numbered key beside it — the same figure/key pair the whole site uses.
+   Without JavaScript every review is simply stacked and readable. */
+.reviewplate { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
+@media (max-width: 900px) { .reviewplate { grid-template-columns: minmax(0, 1fr); } }
+
 .reviews {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--plate-rule);
+  position: relative;
   border: 1px solid var(--plate-rule);
+  background: var(--plate-field);
 }
-@media (max-width: 900px) { .reviews { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 620px) { .reviews { grid-template-columns: minmax(0, 1fr); } }
 
 .review {
-  background: var(--plate-field);
-  padding: clamp(20px, 2.6vw, 32px);
+  padding: clamp(22px, 3vw, 38px);
   display: flex; flex-direction: column; gap: var(--s-md);
   margin: 0;
 }
+/* JS shows one at a time; with JS off they stack, divided by a rule */
+.js .reviews .review { display: none; }
+.js .reviews .review.is-on { display: flex; }
+.reviews .review + .review { border-top: 1px solid var(--plate-rule); }
+.js .reviews .review + .review { border-top: 0; }
+
+/* the numbered key that selects a review */
+.reviewkey { list-style: none; margin: 0; padding: 0; }
+.reviewkey li { position: relative; border-top: 1px solid var(--plate-rule); }
+.reviewkey li:last-child { border-bottom: 1px solid var(--plate-rule); }
+.reviewkey button {
+  appearance: none; background: none; border: 0; margin: 0; border-radius: 0;
+  width: 100%; box-sizing: border-box; text-align: left; cursor: pointer;
+  display: grid; grid-template-columns: 30px 1fr; gap: var(--s-md);
+  align-items: baseline; padding: 15px 12px 15px 0;
+  font: inherit; color: inherit;
+  transition: background var(--dur-ui) var(--ease-plate);
+}
+.reviewkey button:hover { background: var(--plate-field); }
+.reviewkey button:focus-visible { outline: 2px solid var(--berry-ink); outline-offset: -2px; }
+.reviewkey .n { font: 500 0.75rem/1.5 var(--f-label); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.reviewkey .who { font-weight: 500; }
+.reviewkey li[data-on] { background: var(--plate-field); }
+.reviewkey li[data-on] .n { color: var(--berry-ink); }
+.reviewkey li[data-on] .who { font-weight: 700; }
+.reviewkey li::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--lime-bright); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-plate);
+}
+.reviewkey li[data-on]::after { transform: scaleX(1); }
+.js .reviewkey { display: block; }
 .review__rating { display: flex; align-items: center; gap: 8px; }
 .review__stars { display: block; flex: none; }
 .review__stars .st-on { fill: var(--berry-ink); }
