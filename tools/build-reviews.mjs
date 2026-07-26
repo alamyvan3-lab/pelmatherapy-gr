@@ -79,7 +79,7 @@ const agg = data.rating
   : '';
 
 const block = `${START}
-<section class="sect" id="reviews">
+<section class="sect" id="reviews" data-no-i18n lang="el">
   <div class="plate">
     <div class="reg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 ${agg}    <div class="reviewrail" data-reviewrail style="margin-top:var(--s-lg)">

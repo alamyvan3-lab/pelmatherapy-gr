@@ -10,6 +10,79 @@
 
   root.classList.add('js');
 
+  /* --------------------------------------------------------- language ---- */
+  /* Greek is the source text. English is applied over it in the browser from
+     assets/i18n.js. Anything inside [data-no-i18n] is never touched — that is
+     how the reviews stay in the patients' own words in both modes. */
+  (function () {
+    var DICT = window.PELMA_I18N;
+    var btn = doc.querySelector('[data-lang-toggle]');
+    if (!DICT || !btn) return;
+
+    var KEY = 'pelma-lang';
+    var lang = 'el';
+    try { lang = window.localStorage.getItem(KEY) === 'en' ? 'en' : 'el'; } catch (e) {}
+
+    // Collect the text nodes once, skipping excluded subtrees, script/style,
+    // and anything with no Greek in it.
+    var nodes = [];
+    (function walk(el) {
+      for (var n = el.firstChild; n; n = n.nextSibling) {
+        if (n.nodeType === 3) {
+          if (n.nodeValue && DICT[n.nodeValue.trim()]) nodes.push(n);
+        } else if (n.nodeType === 1) {
+          var tag = n.nodeName.toLowerCase();
+          if (tag === 'script' || tag === 'style') continue;
+          if (n.hasAttribute && n.hasAttribute('data-no-i18n')) continue;
+          walk(n);
+        }
+      }
+    })(doc.body);
+
+    // attributes that carry user-facing prose
+    var attrEls = [].filter.call(doc.querySelectorAll('[aria-label]'), function (el) {
+      return !el.closest('[data-no-i18n]') && DICT[el.getAttribute('aria-label').trim()];
+    });
+
+    var originals = {
+      text: nodes.map(function (n) { return n.nodeValue; }),
+      attrs: attrEls.map(function (el) { return el.getAttribute('aria-label'); }),
+      title: doc.title,
+    };
+
+    function apply(to) {
+      var en = to === 'en';
+      nodes.forEach(function (n, i) {
+        var raw = originals.text[i];
+        var t = raw.trim();
+        if (!en) { n.nodeValue = raw; return; }
+        var hit = DICT[t];
+        if (hit) n.nodeValue = raw.replace(t, hit);
+      });
+      attrEls.forEach(function (el, i) {
+        var raw = originals.attrs[i];
+        el.setAttribute('aria-label', en ? (DICT[raw.trim()] || raw) : raw);
+      });
+      if (en && DICT[originals.title.trim()]) doc.title = DICT[originals.title.trim()];
+      else doc.title = originals.title;
+
+      root.setAttribute('lang', en ? 'en' : 'el');
+      // the reviews stay Greek, so say so explicitly for screen readers
+      var keep = doc.querySelectorAll('[data-no-i18n]');
+      for (var k = 0; k < keep.length; k++) keep[k].setAttribute('lang', 'el');
+
+      btn.setAttribute('aria-pressed', String(en));
+      btn.setAttribute('lang', en ? 'el' : 'en');
+      var lbl = btn.querySelector('[data-lang-label]');
+      if (lbl) lbl.textContent = en ? 'Ελληνικά' : 'English';
+      lang = to;
+      try { window.localStorage.setItem(KEY, to); } catch (e) {}
+    }
+
+    btn.addEventListener('click', function () { apply(lang === 'en' ? 'el' : 'en'); });
+    if (lang === 'en') apply('en'); else apply('el');
+  })();
+
   /* ---------------------------------------------------------------- nav ---- */
   var burger = doc.querySelector('.burger');
   var nav = doc.getElementById('nav');

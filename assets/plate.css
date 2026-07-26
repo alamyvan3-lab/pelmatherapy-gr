@@ -406,6 +406,23 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 1100px) { .mast-tel__lbl { display: none; } }
 @media (max-width: 620px) { .mast-tel { padding: 9px 11px; } .mast-tel__num { font-size: 1rem; } }
 
+/* Language toggle. Sits beside the phone in the masthead, drawn as a plate
+   button so it reads as part of the apparatus rather than a widget. */
+.langbtn {
+  appearance: none; cursor: pointer; flex: none;
+  background: none; border: 1px solid rgba(227,230,233,.34);
+  color: var(--plate-stock);
+  padding: 10px 13px; min-height: 40px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 500 0.625rem/1 var(--f-label);
+  letter-spacing: .14em; text-transform: uppercase;
+  transition: border-color var(--dur-ui) var(--ease-plate), color var(--dur-ui) var(--ease-plate);
+}
+.langbtn:hover { border-color: var(--lime-bright); color: var(--lime-bright); }
+.langbtn:focus-visible { outline: 2px solid var(--lime-bright); outline-offset: 3px; }
+.langbtn svg { width: 13px; height: 13px; flex: none; }
+@media (max-width: 620px) { .langbtn { padding: 10px; gap: 0; } .langbtn [data-lang-label] { display: none; } }
+
 .burger {
   display: none;
   background: none; border: 1px solid rgba(227,230,233,.34);
