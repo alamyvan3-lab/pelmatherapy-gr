@@ -21,16 +21,25 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+/* The Place ID is public information (it appears in Google Maps share links),
+   so it lives here rather than in Secrets. Only the API key is secret.
+   Pelma Therapy · Λ.Ολυμπιονικών 49, Γλυκά Νερά 15354 */
+const DEFAULT_PLACE_ID = 'ChIJowjoh4aZoRQRLeFh927BFF8';
+
 const KEY = process.env.GOOGLE_PLACES_API_KEY;
-const PLACE_ID = process.env.GOOGLE_PLACE_ID;
+const PLACE_ID = process.env.GOOGLE_PLACE_ID || DEFAULT_PLACE_ID;
 const ROOT = path.resolve(import.meta.dirname, '..');
 const PAGE = path.join(ROOT, 'index.html');
 
 const START = '<!-- REVIEWS:START -->';
 const END = '<!-- REVIEWS:END -->';
 
-if (!KEY || !PLACE_ID) {
-  console.error('Missing GOOGLE_PLACES_API_KEY or GOOGLE_PLACE_ID.');
+if (!KEY) {
+  console.error(
+    'GOOGLE_PLACES_API_KEY is not set.\n' +
+    'Add it as a repository secret (Settings > Secrets and variables > Actions),\n' +
+    'then re-run this workflow. The Place ID is already configured.'
+  );
   process.exit(1);
 }
 

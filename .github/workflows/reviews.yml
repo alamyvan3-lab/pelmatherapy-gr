@@ -26,10 +26,11 @@ jobs:
         with:
           node-version: '20'
 
+      # Only the API key is secret. The Place ID is public and is baked into
+      # tools/fetch-reviews.mjs, so there is just one secret to configure.
       - name: Fetch reviews and rewrite index.html
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
         run: node tools/fetch-reviews.mjs
 
       - name: Commit if the reviews changed
