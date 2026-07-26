@@ -1,0 +1,18 @@
+# --- kept private: internal design docs, not part of the published site ---
+PRODUCT.md
+DESIGN.md
+HANDOFF.md
+content-inventory.md
+.impeccable/
+
+# --- local tooling, never published ---
+.claude/
+check.cmd
+
+# --- preview artifact: the 4-page site is what ships, not the single-file bundle ---
+pelmatherapy-preview.html
+
+# --- misc ---
+*.log
+.DS_Store
+Thumbs.db
