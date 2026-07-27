@@ -181,28 +181,18 @@
       </div>
 
       <div class="figwell offreg">
-        <svg viewBox="0 0 380 420" style="width:100%;height:auto;display:block" role="img"
+        <svg viewBox="0 0 380 372" style="width:100%;height:auto;display:block" role="img"
              aria-label="EVA · πολλές επιλογές · μηχάνημα ακριβείας CNC">
-          <defs>
-            <pattern id="heva" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-              <line x1="0" y1="0" x2="0" y2="5" stroke="var(--lime-deep)" stroke-width="1.1" opacity=".6"/>
-            </pattern>
-          </defs>
+          <!-- EVA is offered in multiple options; the hardness is chosen
+               clinically per case, not advertised as fixed tiers. The figure
+               is the insole being cut on the CNC, which is the actual subject
+               of "manufacture". -->
+          <text class="svg-lbl svg-lbl--ink" x="14" y="26">EVA</text>
+          <text class="svg-lbl svg-lbl--lime" x="60" y="26">ΠΟΛΛΕΣ ΕΠΙΛΟΓΕΣ</text>
+          <path d="M14 42h352" stroke="var(--plate-rule)" stroke-width="1"/>
 
-          <!-- EVA, offered in multiple options; the hardness is chosen
-               clinically per case rather than advertised as fixed tiers -->
-          <text class="svg-lbl svg-lbl--ink" x="14" y="24">EVA</text>
-          <g stroke="var(--lime-deep)" stroke-width="1.6">
-            <rect x="14" y="38" width="100" height="72" fill="url(#heva)"/>
-            <rect x="128" y="38" width="100" height="72" fill="url(#heva)"/>
-            <rect x="242" y="38" width="100" height="72" fill="url(#heva)"/>
-          </g>
-          <text class="svg-lbl svg-lbl--lime" x="14" y="128">ΠΟΛΛΕΣ ΕΠΙΛΟΓΕΣ</text>
-          <path d="M14 148h328" stroke="var(--plate-rule)" stroke-width="1"/>
-
-          <!-- the shell in plan, with the CNC toolpath that cuts it -->
-          <text class="svg-lbl svg-lbl--ink" x="14" y="176">3D ΣΧΕΔΙΑΣΤΙΚΟ ΠΡΟΓΡΑΜΜΑ</text>
-          <g transform="translate(96 190) scale(0.46) translate(-80 -260)">
+          <text class="svg-lbl svg-lbl--ink" x="14" y="74">3D ΣΧΕΔΙΑΣΤΙΚΟ ΠΡΟΓΡΑΜΜΑ</text>
+          <g transform="translate(142 90) scale(0.52) translate(-80 -267)">
             <!-- the shell is lime everywhere on this site: it is the second
                  ink's object, and the same object cannot change ink per page -->
             <path fill="none" stroke="var(--lime-deep)" stroke-width="4.4"
@@ -213,12 +203,12 @@
               <path d="M242 306v24M98 330v24M244 354v24M102 378v24M238 402v24M106 426v24M232 450v24M110 474v24M228 498v24M114 522v24M222 546v24M122 570v24M212 594v24"/>
             </g>
           </g>
-          <g stroke="var(--plate-rule)" stroke-width="1" fill="none"><path d="M186 300h44"/></g>
-          <circle cx="186" cy="300" r="2.6" fill="var(--lime-deep)"/>
-          <text class="svg-lbl svg-lbl--lime" x="236" y="290">ΜΗΧΑΝΗΜΑ</text>
-          <text class="svg-lbl svg-lbl--lime" x="236" y="306">ΑΚΡΙΒΕΙΑΣ CNC</text>
-          <text class="svg-lbl" x="14" y="408">ΟΡΘΩΤΙΚΑ ΠΕΛΜΑΤΑ</text>
-          <path d="M14 388h328" stroke="var(--plate-rule)" stroke-width="1"/>
+          <g stroke="var(--plate-rule)" stroke-width="1" fill="none"><path d="M232 150h16"/></g>
+          <circle cx="232" cy="150" r="2.6" fill="var(--lime-deep)"/>
+          <text class="svg-lbl svg-lbl--lime" x="252" y="146">ΜΗΧΑΝΗΜΑ</text>
+          <text class="svg-lbl svg-lbl--lime" x="252" y="162">ΑΚΡΙΒΕΙΑΣ CNC</text>
+          <path d="M14 330h352" stroke="var(--plate-rule)" stroke-width="1"/>
+          <text class="svg-lbl" x="14" y="352">ΟΡΘΩΤΙΚΑ ΠΕΛΜΑΤΑ</text>
         </svg>
       </div>
 
