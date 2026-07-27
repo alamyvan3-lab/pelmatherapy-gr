@@ -176,35 +176,28 @@
 
       <div>
         <h2 class="headline">Κατασκεύη Ορθωτικών Πελμάτων</h2>
-        <p style="margin-top:24px">Με βάση τα στοιχεία απο την κλινική αξιολόγηση και το πελματογράφημα σχεδιάζεται και κατασκευάζεται ένα εξατομικευμένο ζεύγος ορθωτικών πελμάτων απο υλικό EVA κατάλληλης σκληρότητας ανάλογα με τη περίπτωση (μαλακό, μέτριο, σκληρό).  Για το σχεδιασμό χρησιμοποιείται 3D σχεδιαστικό πρόγραμμα και για τη κατασκευή μηχάνημα ακριβείας CNC. Τέλος προσαρμόζεται το πέλμα στο κατάλληλο υπόδημα και δίνονται οδηγίες για την ορθή χρήση του.</p>
+        <p style="margin-top:24px">Με βάση τα στοιχεία απο την κλινική αξιολόγηση και το πελματογράφημα σχεδιάζεται και κατασκευάζεται ένα εξατομικευμένο ζεύγος ορθωτικών πελμάτων απο υλικό EVA κατάλληλης σκληρότητας ανάλογα με τη περίπτωση.  Για το σχεδιασμό χρησιμοποιείται 3D σχεδιαστικό πρόγραμμα και για τη κατασκευή μηχάνημα ακριβείας CNC. Τέλος προσαρμόζεται το πέλμα στο κατάλληλο υπόδημα και δίνονται οδηγίες για την ορθή χρήση του.</p>
         <p style="margin-top:32px"><a class="imprint offreg" href="tel:6979849921"><span class="imprint__lbl">Τηλέφωνο - Ραντεβού</span><span class="imprint__num">697 9849921</span></a></p>
       </div>
 
       <div class="figwell offreg">
         <svg viewBox="0 0 380 420" style="width:100%;height:auto;display:block" role="img"
-             aria-label="EVA — μαλακό, μέτριο, σκληρό · μηχάνημα ακριβείας CNC">
+             aria-label="EVA · πολλές επιλογές · μηχάνημα ακριβείας CNC">
           <defs>
-            <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-              <line x1="0" y1="0" x2="0" y2="9" stroke="var(--lime-deep)" stroke-width="1.1" opacity=".5"/>
-            </pattern>
-            <pattern id="h2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-              <line x1="0" y1="0" x2="0" y2="5" stroke="var(--lime-deep)" stroke-width="1.1" opacity=".65"/>
-            </pattern>
-            <pattern id="h3" width="2.8" height="2.8" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-              <line x1="0" y1="0" x2="0" y2="2.8" stroke="var(--lime-deep)" stroke-width="1.1" opacity=".85"/>
+            <pattern id="heva" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+              <line x1="0" y1="0" x2="0" y2="5" stroke="var(--lime-deep)" stroke-width="1.1" opacity=".6"/>
             </pattern>
           </defs>
 
-          <!-- EVA in three hardnesses, shown as section hatch density -->
+          <!-- EVA, offered in multiple options; the hardness is chosen
+               clinically per case rather than advertised as fixed tiers -->
           <text class="svg-lbl svg-lbl--ink" x="14" y="24">EVA</text>
           <g stroke="var(--lime-deep)" stroke-width="1.6">
-            <rect x="14" y="38" width="100" height="72" fill="url(#h1)"/>
-            <rect x="128" y="38" width="100" height="72" fill="url(#h2)"/>
-            <rect x="242" y="38" width="100" height="72" fill="url(#h3)"/>
+            <rect x="14" y="38" width="100" height="72" fill="url(#heva)"/>
+            <rect x="128" y="38" width="100" height="72" fill="url(#heva)"/>
+            <rect x="242" y="38" width="100" height="72" fill="url(#heva)"/>
           </g>
-          <g class="svg-lbl svg-lbl--lime">
-            <text x="14" y="128">ΜΑΛΑΚΟ</text><text x="128" y="128">ΜΕΤΡΙΟ</text><text x="242" y="128">ΣΚΛΗΡΟ</text>
-          </g>
+          <text class="svg-lbl svg-lbl--lime" x="14" y="128">ΠΟΛΛΕΣ ΕΠΙΛΟΓΕΣ</text>
           <path d="M14 148h328" stroke="var(--plate-rule)" stroke-width="1"/>
 
           <!-- the shell in plan, with the CNC toolpath that cuts it -->

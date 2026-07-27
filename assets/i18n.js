@@ -117,8 +117,8 @@ window.PELMA_I18N = {
     'Making custom orthotic insoles helps relieve the symptoms and also treats many conditions, by correcting the position of the body and the distribution of loads during standing and walking.',
   'Με την χρήση του πελματογράφου καταγράφονται ηλεκτρονικά στοιχεία που αφορούν τη στάση και τη βάδισή μας, όπως η γραμμή βαδίσης και τα επιμέρους φορτία (Στατική & Δυναμική μέτρηση). Έτσι έχουμε μια λεπτομερή αξιολόγηση και ανάγνωση όσον αφορά τη μορφολογία του ποδιού μας, την κατεύθυνση των δυνάμεων κατά τη βάδιση, ανωμαλίες στη βάδιση, το χρόνο που χρειάστηκε κάθε σημείο του ποδιού (Οπίσθιο, Μέσο, Πρόσθιο) για να ολοκληρώσει μια κίνηση καθώς  και τα  επιμέρους φορτία που ασκούνται σε κάθε σημείο του πέλματος. Οι πληροφορίες συγκρίνονται σε σχέση με την ιδανική βάδιση.':
     'Using the pedobarograph, electronic data is recorded about our posture and gait, such as the line of gait and the individual loads (Static & Dynamic measurement). This gives us a detailed assessment and reading of the morphology of the foot, the direction of forces during walking, gait abnormalities, the time each part of the foot (Rearfoot, Midfoot, Forefoot) needed to complete a movement, and the individual loads applied at each point of the sole. The information is compared against the ideal gait.',
-  'Με βάση τα στοιχεία απο την κλινική αξιολόγηση και το πελματογράφημα σχεδιάζεται και κατασκευάζεται ένα εξατομικευμένο ζεύγος ορθωτικών πελμάτων απο υλικό EVA κατάλληλης σκληρότητας ανάλογα με τη περίπτωση (μαλακό, μέτριο, σκληρό).  Για το σχεδιασμό χρησιμοποιείται 3D σχεδιαστικό πρόγραμμα και για τη κατασκευή μηχάνημα ακριβείας CNC. Τέλος προσαρμόζεται το πέλμα στο κατάλληλο υπόδημα και δίνονται οδηγίες για την ορθή χρήση του.':
-    'Based on the data from the clinical assessment and the foot pressure analysis, a custom pair of orthotic insoles is designed and manufactured from EVA of the appropriate hardness for the case (soft, medium, firm). A 3D design program is used for the design and a precision CNC machine for the manufacture. Finally the insole is fitted to the appropriate footwear and instructions are given for its correct use.',
+  'Με βάση τα στοιχεία απο την κλινική αξιολόγηση και το πελματογράφημα σχεδιάζεται και κατασκευάζεται ένα εξατομικευμένο ζεύγος ορθωτικών πελμάτων απο υλικό EVA κατάλληλης σκληρότητας ανάλογα με τη περίπτωση.  Για το σχεδιασμό χρησιμοποιείται 3D σχεδιαστικό πρόγραμμα και για τη κατασκευή μηχάνημα ακριβείας CNC. Τέλος προσαρμόζεται το πέλμα στο κατάλληλο υπόδημα και δίνονται οδηγίες για την ορθή χρήση του.':
+    'Based on the data from the clinical assessment and the foot pressure analysis, a custom pair of orthotic insoles is designed and manufactured from EVA of the appropriate hardness for the case. A 3D design program is used for the design and a precision CNC machine for the manufacture. Finally the insole is fitted to the appropriate footwear and instructions are given for its correct use.',
 
   /* --- directions ------------------------------------------------------ */
   'Δίπλα στην έξοδο Γλυκά Νερά (Y6) της Αττικής Οδού':
@@ -151,9 +151,7 @@ window.PELMA_I18N = {
   'ΟΒΕΛΙΑΙΟ': 'SAGITTAL',
   'ΜΕΤΩΠΙΑΙΟ': 'FRONTAL',
   'ΕΓΚΑΡΣΙΟ': 'TRANSVERSE',
-  'ΜΑΛΑΚΟ': 'SOFT',
-  'ΜΕΤΡΙΟ': 'MEDIUM',
-  'ΣΚΛΗΡΟ': 'FIRM',
+  'ΠΟΛΛΕΣ ΕΠΙΛΟΓΕΣ': 'MULTIPLE OPTIONS',
   '3D ΣΧΕΔΙΑΣΤΙΚΟ ΠΡΟΓΡΑΜΜΑ': '3D DESIGN PROGRAM',
   'ΜΗΧΑΝΗΜΑ': 'PRECISION',
   'ΑΚΡΙΒΕΙΑΣ CNC': 'CNC MACHINE',
@@ -182,6 +180,7 @@ window.PELMA_I18N = {
   'επιμέρους φορτία · Στατική & Δυναμική μέτρηση':
     'individual loads · Static & Dynamic measurement',
   'Οβελιαίο · Μετωπιαίο · Εγκάρσιο': 'Sagittal · Frontal · Transverse',
+  'EVA · πολλές επιλογές · μηχάνημα ακριβείας CNC': 'EVA · multiple options · precision CNC machine',
   'Απο Μεσογείων · Δίπλα στην έξοδο Γλυκά Νερά (Y6) της Αττικής Οδού · Μετρό & λεωφορείο':
     'From Mesogeion · Next to the Glyka Nera (Y6) exit of Attiki Odos · Metro & bus',
   'Απο Μεσογείων · Δίπλα στην έξοδο Γλυκά Νερά (Y6) της Αττικής Οδού · Μετρό & λεωφορείο · Λ.Ολυμπιονικών 49 Γλυκά Νερά':
